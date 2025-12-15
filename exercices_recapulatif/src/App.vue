@@ -1,47 +1,41 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="container my-5">
+    <h1 class="text-center mb-4 text-primary">📝 Gestion des Étudiants Potentiels</h1>
+    
+    <div class="row">
+      <div class="col-lg-5 mb-4">
+        <StudentForm @add-student="addStudent" />
+      </div>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <div class="col-lg-7">
+        <StudentList :students="students" />
+      </div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-}
+<script>
+import StudentForm from './components/StudentForm.vue'
+import StudentList from './components/StudentList.vue'
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+export default {
+  components: { StudentForm, StudentList },
+  data() {
+    return {
+      // Pour la persistance (bonus), on pourrait initialiser ici avec localStorage
+      students: [] 
+    }
+  },
+  methods: {
+    // Méthode appelée lorsque StudentForm émet 'add-student'
+    addStudent(student) {
+      // Ajout d'un ID pour identifier chaque étudiant (bonne pratique)
+      this.students.push({
+        id: Date.now(), // ID basé sur l'horodatage
+        ...student
+      })
+    }
   }
 }
-</style>
+</script>
